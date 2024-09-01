@@ -7,7 +7,7 @@ function voteForFayeYoko() {
   const currentTime = Date.now();
 
   // Kiểm tra xem đã trôi qua ít nhất 1 giây kể từ lần bỏ phiếu cuối cùng chưa
-  if (currentTime - lastVoteTime < 1000) {
+  if (currentTime - lastVoteTime <= 1000) {
     console.log("Skipping vote due to rate limit");
     return;
   }
