@@ -14,6 +14,9 @@
 <body>
     <h1>Auto Voter Stats</h1>
     <p>Automatically voting for FayeYoko every second.</p>
+    <label for="interval-input">Vote Interval (ms):</label>
+    <input type="range" id="interval-input" min="1000" max="10000" step="100" value="1000">
+    <span id="interval-display">1000</span>
     <button id="start-auto-click">Start Auto Click</button>
     <button id="stop-auto-click" style="display:none;">Stop Auto Click</button>
     <script src="popup.js"></script>

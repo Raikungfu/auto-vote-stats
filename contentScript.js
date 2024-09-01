@@ -1,13 +1,13 @@
 let intervalStatsId;
-let isVoting = false; // Biến để theo dõi trạng thái nhấp chuột
-let totalVotes = 0; // Biến để theo dõi tổng số lần bỏ phiếu
-let lastVoteTime = 0; // Biến để theo dõi thời gian của lần bỏ phiếu cuối cùng
+let isVoting = false;
+let totalVotes = 0;
+let lastVoteTime = 0;
+let voteInterval = 1000; // Giá trị mặc định là 1000ms
 
 function voteForFayeYoko() {
   const currentTime = Date.now();
 
-  // Kiểm tra xem đã trôi qua ít nhất 1 giây kể từ lần bỏ phiếu cuối cùng chưa
-  if (currentTime - lastVoteTime <= 1000) {
+  if (currentTime - lastVoteTime <= voteInterval) {
     console.log("Skipping vote due to rate limit");
     return;
   }
@@ -43,7 +43,7 @@ function voteForFayeYoko() {
             totalVotes++;
             console.log("Total votes:", totalVotes);
 
-            lastVoteTime = currentTime; // Cập nhật thời gian của lần bỏ phiếu cuối cùng
+            lastVoteTime = currentTime;
 
             setTimeout(() => {
               isVoting = false;
@@ -61,10 +61,10 @@ function voteForFayeYoko() {
   }
 }
 
-// Hàm để bắt đầu và dừng tự động click
-function startAutoClick() {
+function startAutoClick(interval) {
   if (!intervalStatsId) {
-    intervalStatsId = setInterval(voteForFayeYoko, 1100);
+    voteInterval = interval; // Cập nhật khoảng thời gian chờ
+    intervalStatsId = setInterval(voteForFayeYoko, voteInterval + 100); // Thay đổi thời gian chạy tự động dựa trên thời gian chờ
   }
 }
 
@@ -75,10 +75,9 @@ function stopAutoClick() {
   }
 }
 
-// Lắng nghe các thông điệp từ popup
 chrome.runtime.onMessage.addListener((message) => {
   if (message.action === "start") {
-    startAutoClick();
+    startAutoClick(message.interval);
   } else if (message.action === "stop") {
     stopAutoClick();
   }
