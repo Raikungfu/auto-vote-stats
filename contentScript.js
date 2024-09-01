@@ -1,8 +1,17 @@
-let intervalId;
+let intervalStatsId;
 let isVoting = false; // Biến để theo dõi trạng thái nhấp chuột
 let totalVotes = 0; // Biến để theo dõi tổng số lần bỏ phiếu
+let lastVoteTime = 0; // Biến để theo dõi thời gian của lần bỏ phiếu cuối cùng
 
 function voteForFayeYoko() {
+  const currentTime = Date.now();
+
+  // Kiểm tra xem đã trôi qua ít nhất 1 giây kể từ lần bỏ phiếu cuối cùng chưa
+  if (currentTime - lastVoteTime < 1000) {
+    console.log("Skipping vote due to rate limit");
+    return;
+  }
+
   const answers = document.querySelectorAll(".answer");
   let fayeYokoFound = false;
 
@@ -34,6 +43,8 @@ function voteForFayeYoko() {
             totalVotes++;
             console.log("Total votes:", totalVotes);
 
+            lastVoteTime = currentTime; // Cập nhật thời gian của lần bỏ phiếu cuối cùng
+
             setTimeout(() => {
               isVoting = false;
             }, 1000);
@@ -52,15 +63,15 @@ function voteForFayeYoko() {
 
 // Hàm để bắt đầu và dừng tự động click
 function startAutoClick() {
-  if (!intervalId) {
-    intervalId = setInterval(voteForFayeYoko, 1000);
+  if (!intervalStatsId) {
+    intervalStatsId = setInterval(voteForFayeYoko, 1000);
   }
 }
 
 function stopAutoClick() {
-  if (intervalId) {
-    clearInterval(intervalId);
-    intervalId = null;
+  if (intervalStatsId) {
+    clearInterval(intervalStatsId);
+    intervalStatsId = null;
   }
 }
 
