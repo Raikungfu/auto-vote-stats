@@ -64,7 +64,7 @@ function voteForFayeYoko() {
 // Hàm để bắt đầu và dừng tự động click
 function startAutoClick() {
   if (!intervalStatsId) {
-    intervalStatsId = setInterval(voteForFayeYoko, 1000);
+    intervalStatsId = setInterval(voteForFayeYoko, 1100);
   }
 }
 

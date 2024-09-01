@@ -17,8 +17,9 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://stats-poll-awards.onrender.com/VOTE/"],
-      "js": ["contentScript.js"]
+      "matches": ["https://stats-poll-awards.onrender.com/*"],
+      "js": ["contentScript.js"],
+      "run_at": "document_start"
     }
   ]
 }
